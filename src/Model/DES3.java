@@ -9,8 +9,8 @@ public class DES3 {
     }
     public String encryptDES3(String text, ArrayList<String> keys){
 
-            String firstRound = DES.encrypt(text, keys.get(0));
-            String secondRound = DES.decrypt(text, keys.get(1));
+        String firstRound = DES.encrypt(text, keys.get(0));
+        String secondRound = DES.decrypt(text, keys.get(1));
 
         return DES.encrypt(text, keys.get(2));
     }

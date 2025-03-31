@@ -22,11 +22,11 @@ public class DES {
     public String encrypt(String plainText, String key) {
 
         ArrayList<byte[]> blocks64Bits  = tools.stringToBits(plainText);
-            System.out.println("PRZED SZYFROWANIEM:");
-            for (byte[] block : blocks64Bits) {
-                tools.printOneBlock(block);
-                System.out.println("\n");
-            }
+        System.out.println("PRZED SZYFROWANIEM:");
+        for (byte[] block : blocks64Bits) {
+            tools.printOneBlock(block);
+            System.out.println("\n");
+        }
 
 
         //zamiana na bity i tworzenie podkluczy
@@ -67,14 +67,14 @@ public class DES {
         for (int i = 0; i < 16; i++) {
             //System.out.println("Runda: " + (i+1));
             byte[] newR = functionF(bits32R, subKeys.get(i));
-                //System.out.println("ilosc po funkcji, nowa tymczasowa R: " + (newR.length) + " /32");
+            //System.out.println("ilosc po funkcji, nowa tymczasowa R: " + (newR.length) + " /32");
             byte[] oldR = bits32R.clone();
-                //System.out.println("klon starej R: " + (oldR.length) + " /32");
+            //System.out.println("klon starej R: " + (oldR.length) + " /32");
 
             for (int j = 0; j < bits32R.length; j++) {
                 bits32R[j] = (byte) (newR[j] ^ bits32L[j]);
             }
-                //System.out.println("nowa, stała R: " + (bits32R.length) + " /32");
+            //System.out.println("nowa, stała R: " + (bits32R.length) + " /32");
 
             bits32L = oldR;
             //System.out.println("nowa, stała L (kopia oldR): " + (bits32L.length) + " /32");
@@ -96,21 +96,21 @@ public class DES {
 
     private byte[] functionF(byte[] bitsR, byte[] key) {
 
-            //System.out.println("ilosc przed perm. ext.: " + (bitsR.length) + " /32");
+        //System.out.println("ilosc przed perm. ext.: " + (bitsR.length) + " /32");
         byte[] expBitsR = data.permute(EP, bitsR);  //permutacja z rozszerzeniem 32 -> 48 bitów
-            //System.out.println("ilosc po perm. ext.: " + (expBitsR.length) + " /48");
+        //System.out.println("ilosc po perm. ext.: " + (expBitsR.length) + " /48");
         byte[] XORBits = new byte[expBitsR.length];
 
         for (int i = 0; i < expBitsR.length; i++) {
             XORBits[i] = (byte) (expBitsR[i] ^ key[i]);
         }
-            //System.out.println("ilosc po XOR: " + (XORBits.length) + " /48");
+        //System.out.println("ilosc po XOR: " + (XORBits.length) + " /48");
 
         byte[] afterSBOX = data.useSBOX(XORBits);
-            //System.out.println("ilosc po SBOX: " + (afterSBOX.length) + " /32");
+        //System.out.println("ilosc po SBOX: " + (afterSBOX.length) + " /32");
 
         byte[] lastPermute = data.permute(P, afterSBOX);
-            //System.out.println("ilosc po P: " + (lastPermute.length) + " /32");
+        //System.out.println("ilosc po P: " + (lastPermute.length) + " /32");
 
         return lastPermute;
     }
@@ -134,15 +134,15 @@ public class DES {
             byte[] encrypted = block64Encryption(block);
             decryptedBlocks64Bits.add(encrypted);
             System.out.println("supi wazne");
-           tools.printOneBlock(encrypted);
+            tools.printOneBlock(encrypted);
         }
 
 
-            System.out.println("PO DESZYFROWANIU:");
-            for (byte[] block : decryptedBlocks64Bits) {
-                tools.printOneBlock(block);
-                System.out.println("\n");
-            }
+        System.out.println("PO DESZYFROWANIU:");
+        for (byte[] block : decryptedBlocks64Bits) {
+            tools.printOneBlock(block);
+            System.out.println("\n");
+        }
 
         return tools.bitsToString(decryptedBlocks64Bits);
     }

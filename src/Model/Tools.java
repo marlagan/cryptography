@@ -15,9 +15,9 @@ public class Tools {
     public byte[] byteConversion(String text) {
 
         byte[] allBytes = new byte[text.length()];
-            for (int i = 0; i < text.length(); i++) {
-                allBytes[i] = (byte) text.charAt(i);
-            }
+        for (int i = 0; i < text.length(); i++) {
+            allBytes[i] = (byte) text.charAt(i);
+        }
         return allBytes;
 
     }
