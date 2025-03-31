@@ -1,8 +1,8 @@
-package main.java.Model;
+package Model;
 
 import java.util.ArrayList;
 
-import static main.java.Model.Data.*;
+import static Model.Data.*;
 
 public class Key {
     /**

@@ -1,4 +1,4 @@
-package main.java.Model;
+package Model;
 
 import java.nio.charset.StandardCharsets;
 import java.io.*;

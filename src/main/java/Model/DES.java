@@ -1,12 +1,12 @@
-package main.java.Model;
+package Model;
 
-import main.java.Model.Tools;
-import main.java.Model.Key;
+import Model.Tools;
+import Model.Key;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static main.java.Model.Data.*;
+import static Model.Data.*;
 
 public class DES {
 
