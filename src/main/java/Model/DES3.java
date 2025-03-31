@@ -55,4 +55,43 @@ public class DES3 {
         return finalString.toString();
 
     }
+
+
+
+
+
+    public ArrayList<byte[]> encryptDES3File(ArrayList<byte[]> bits, ArrayList<String> keys){
+
+        String firstKey = keys.get(0);
+        String secondKey = keys.get(1);
+        String thirdKey = keys.get(2);
+
+        byte[] keyFirstBits  = tools.stringToBits(firstKey).get(0);
+        byte[] keySecondBits = tools.stringToBits(secondKey).get(0);
+        byte[] keyThirdBits = tools.stringToBits(thirdKey).get(0);
+
+        ArrayList<byte[]> bitsOne= DES.encrypt(bits, keyFirstBits);
+        ArrayList<byte[]> bitsTwo= DES.decrypt(bitsOne, keySecondBits);
+        ArrayList<byte[]> bitsThree= DES.encrypt(bitsTwo, keyThirdBits);
+
+        return bitsThree;
+    }
+
+    public ArrayList<byte[]> decryptDES3File(ArrayList<byte[]> bits, ArrayList<String> keys){
+
+        String firstKey = keys.get(0);
+        String secondKey = keys.get(1);
+        String thirdKey = keys.get(2);
+
+        byte[] keyFirstBits  = tools.stringToBits(firstKey).get(0);
+        byte[] keySecondBits = tools.stringToBits(secondKey).get(0);
+        byte[] keyThirdBits = tools.stringToBits(thirdKey).get(0);
+
+        ArrayList<byte[]> bitsOne= DES.decrypt(bits, keyThirdBits);
+        ArrayList<byte[]> bitsTwo= DES.encrypt(bitsOne, keySecondBits);
+        ArrayList<byte[]> bitsThree= DES.decrypt(bitsTwo, keyFirstBits);
+
+        return bitsThree;
+
+    }
 }
