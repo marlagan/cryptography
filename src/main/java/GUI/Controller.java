@@ -10,6 +10,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Random;
 
 public class Controller {
@@ -51,12 +52,14 @@ public class Controller {
     private void encryptText() {
         ArrayList<String> keys = getKeys();
         if (keys == null) return;
-
         String plainText = textInput.getText();
-        System.out.println(plainText);
-        System.out.println(plainText.length());
-        System.out.println(keys);
-        textOutput.setText(des3.encryptDES3(plainText, keys));
+        textInput.setText("");
+
+        String encryptedText = des3.encryptDES3(plainText, keys);
+
+        String base64EncryptedText = Base64.getEncoder().encodeToString(encryptedText.getBytes());
+
+        textOutput.setText(base64EncryptedText);
 
     }
 
@@ -65,7 +68,12 @@ public class Controller {
         if (keys == null) return;
 
         String encryptedText = textOutput.getText();
-        textInput.setText(des3.decryptDES3(encryptedText, keys));
+        textInput.setText("");
+
+        byte[] decodedBase64 = Base64.getDecoder().decode(encryptedText);
+
+        String decryptedText = des3.decryptDES3(new String(decodedBase64), keys);
+        textInput.setText(decryptedText);
     }
 
     private void openFile(TextArea targetArea) {
