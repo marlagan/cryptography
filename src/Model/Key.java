@@ -13,7 +13,7 @@ public class Key {
       int half = key56.length / 2;
       byte[] key28L = new byte[half];
       byte[] key28R = new byte[half];
-
+      System.out.println("kluczeee");
       System.arraycopy(key56, 0, key28L, 0, half);
       System.arraycopy(key56, half, key28R, 0, half);
 

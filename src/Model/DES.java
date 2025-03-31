@@ -22,7 +22,6 @@ public class DES {
     public String encrypt(String plainText, String key) {
 
         ArrayList<byte[]> blocks64Bits  = tools.stringToBits(plainText);
-
             System.out.println("PRZED SZYFROWANIEM:");
             for (byte[] block : blocks64Bits) {
                 tools.printOneBlock(block);
@@ -134,7 +133,10 @@ public class DES {
         for (byte[] block : blocks64Bits) {
             byte[] encrypted = block64Encryption(block);
             decryptedBlocks64Bits.add(encrypted);
+            System.out.println("supi wazne");
+           tools.printOneBlock(encrypted);
         }
+
 
             System.out.println("PO DESZYFROWANIU:");
             for (byte[] block : decryptedBlocks64Bits) {
