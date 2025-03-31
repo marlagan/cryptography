@@ -1,7 +1,5 @@
 package Model;
 
-import Model.Tools;
-import Model.Key;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,20 +16,20 @@ public class DES {
     public DES(){
         this.tools = new Tools();
         this.key = new Key();
-        this.data = new Data();
+        this.data = new Model.Data();
     }
 
     /**
      * Method encrypting the message with a key given by a user, It repeats block64Encryption on very 64 bits block
-     * @param plainText text given by a user
+     * @param blocks64Bits text given by a user
      * @param key key given by a user
      * @return encrypted message
      */
-    public String encrypt(String plainText, String key) {
+    public ArrayList<byte[]> encrypt(ArrayList<byte[]> blocks64Bits, byte[] key) {
 
-        ArrayList<byte[]> blocks64Bits  = tools.stringToBits(plainText);
+        //ArrayList<byte[]> blocks64Bits  = tools.stringToBits(plainText);
 
-        this.subKeys = this.key.generateSubKeys(tools.stringToBits(key).get(0)); //get(0) -> wyciagamy pierwszy blok 64-bitowy (tablice 8 bajtow), bo tak dlugi jest klucz, a .blocks64bits() zwraca liste tych tablic
+        this.subKeys = this.key.generateSubKeys(key); //get(0) -> wyciagamy pierwszy blok 64-bitowy (tablice 8 bajtow), bo tak dlugi jest klucz, a .blocks64bits() zwraca liste tych tablic
 
         ArrayList<byte[]> encryptedBlocks64Bits = new ArrayList<>(); //kazdy blok (64bit) tekstu szyfrujemy za pomoca block64Encryption()
         for (byte[] block : blocks64Bits) {
@@ -39,7 +37,7 @@ public class DES {
             encryptedBlocks64Bits.add(encrypted);
         }
 
-        return tools.bitsToString(encryptedBlocks64Bits);
+        return encryptedBlocks64Bits;
     }
 
     /**
@@ -111,15 +109,15 @@ public class DES {
 
     /**
      * Method decrypting the message given by a user
-     * @param encryptedText encypted text given by a user
+     * @param blocks64Bits encrypted text given by a user
      * @param key the key for this decryption
      * @return decrypted text
      */
-    public String decrypt(String encryptedText, String key) {
+    public ArrayList<byte[]> decrypt(ArrayList<byte[]> blocks64Bits, byte[] key) {
 
-        ArrayList<byte[]> blocks64Bits = tools.stringToBits(encryptedText);
+        //ArrayList<byte[]> blocks64Bits = tools.stringToBits(encryptedText);
 
-        this.subKeys = this.key.generateSubKeys(tools.stringToBits(key).get(0));
+        this.subKeys = this.key.generateSubKeys(key);
         Collections.reverse(subKeys);
 
         ArrayList<byte[]> decryptedBlocks64Bits = new ArrayList<>();
@@ -129,7 +127,7 @@ public class DES {
 
         }
 
-        return tools.bitsToString(decryptedBlocks64Bits);
+        return decryptedBlocks64Bits;
     }
 
 }

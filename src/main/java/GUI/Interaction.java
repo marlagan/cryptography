@@ -1,4 +1,4 @@
-package GUI;
+/*package GUI;
 import Model.DES;
 import Model.ReadWriteFile;
 
@@ -18,5 +18,9 @@ public class Interaction {
         String test = des.decrypt(fromFileTwo, "123abcd");
         ReadWriteFile.writeText(test, currentDirectoryPath+"\\src\\test.txt");
          */
+/*
     }
 }
+
+ */
+
