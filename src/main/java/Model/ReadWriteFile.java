@@ -7,7 +7,8 @@ import java.io.*;
 public class ReadWriteFile {
 
     //The String containing the path to the GUI directory.
-    private static final String directory = System.getProperty("user.dir") + "\\src\\GUI";
+    //private static final String directory = System.getProperty("user.dir") + "\\src\\GUI";
+    private static final String directory = System.getProperty("user.dir") + "\\src\\main\\java\\GUI";
 
     /**
      * Method reading the text from the file

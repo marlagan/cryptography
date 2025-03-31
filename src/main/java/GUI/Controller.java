@@ -22,30 +22,30 @@ public class Controller {
     @FXML
     private TextArea textInput, textOutput;
 
-    @FXML
-    private RadioButton typeWindow, typeFile;
+//    @FXML
+//    private RadioButton typeWindow, typeFile; skurwysynstwo
 
-    @FXML
-    private Label fileNameText, fileNameCrypt;
+//    @FXML
+//    private Label fileNameText, fileNameCrypt;
 
     private DES3 des3;
-    private ToggleGroup encryptionMode;
+//    private ToggleGroup encryptionMode;
 
     @FXML
     public void initialize() {
         des3 = new DES3();
 
-        encryptionMode = new ToggleGroup();
-        typeWindow.setToggleGroup(encryptionMode);
-        typeFile.setToggleGroup(encryptionMode);
-        typeWindow.setSelected(true);
+//        encryptionMode = new ToggleGroup();
+//        typeWindow.setToggleGroup(encryptionMode);
+//        typeFile.setToggleGroup(encryptionMode);
+//        typeWindow.setSelected(true);
 
         generateKeysButton.setOnAction(e -> generateKeys());
         doEncrypt.setOnAction(e -> encryptText());
         doDecrypt.setOnAction(e -> decryptText());
 
-        openFileText.setOnAction(e -> openFile(textInput, fileNameText));
-        openFileCrypt.setOnAction(e -> openFile(textOutput, fileNameCrypt));
+        openFileText.setOnAction(e -> openFile(textInput));
+        openFileCrypt.setOnAction(e -> openFile(textOutput));
         saveFileText.setOnAction(e -> saveFile(textInput));
         saveFileCrypt.setOnAction(e -> saveFile(textOutput));
 
@@ -60,29 +60,25 @@ public class Controller {
         ArrayList<String> keys = getKeys();
         if (keys == null) return;
 
-        if (typeWindow.isSelected()) {
-            String plainText = textInput.getText();
-            textOutput.setText(des3.encryptDES3(plainText, keys));
-        }
+        String plainText = textInput.getText();
+        textOutput.setText(des3.encryptDES3(plainText, keys));
+
     }
 
     private void decryptText() {
         ArrayList<String> keys = getKeys();
         if (keys == null) return;
 
-        if (typeWindow.isSelected()) {
-            String encryptedText = textOutput.getText();
-            textInput.setText(des3.decryptDES3(encryptedText, keys));
-        }
+        String encryptedText = textOutput.getText();
+        textInput.setText(des3.decryptDES3(encryptedText, keys));
     }
 
-    private void openFile(TextArea targetArea, Label fileNameLabel) {
+    private void openFile(TextArea targetArea) {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-            fileNameLabel.setText(file.getName());
             try {
-                targetArea.setText(ReadWriteFile.readText(file.getPath()));
+                targetArea.setText(ReadWriteFile.readText(file.getName()));
             } catch (IOException e) {
                 showAlert("Błąd", "Nie udało się wczytać pliku.");
             }
@@ -94,7 +90,7 @@ public class Controller {
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             try {
-                ReadWriteFile.writeText(file.getPath(), sourceArea.getText());
+                ReadWriteFile.writeText(file.getName(), sourceArea.getText());
                 showAlert("Sukces", "Plik zapisano pomyślnie.");
             } catch (IOException e) {
                 showAlert("Błąd", "Nie udało się zapisać pliku.");
@@ -110,9 +106,9 @@ public class Controller {
             if (keys == null) return;
 
             try {
-                String content = ReadWriteFile.readText(file.getPath());
+                String content = ReadWriteFile.readText(file.getName());
                 String result = isEncrypt ? des3.encryptDES3(content, keys) : des3.decryptDES3(content, keys);
-                String newFilePath = file.getPath() + (isEncrypt ? ".enc" : ".dec");
+                String newFilePath = (isEncrypt ? "encrypted.txt" : "decrypted.txt");
                 ReadWriteFile.writeText(newFilePath, result);
                 showAlert("Sukces", "Plik zapisano jako " + newFilePath);
             } catch (IOException e) {
@@ -120,6 +116,7 @@ public class Controller {
             }
         }
     }
+
 
     private ArrayList<String> getKeys() {
         ArrayList<String> keys = new ArrayList<>();
@@ -159,7 +156,7 @@ public class Controller {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random rand = new Random();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 7; i++) {
             sb.append(characters.charAt(rand.nextInt(characters.length())));
         }
         return sb.toString();

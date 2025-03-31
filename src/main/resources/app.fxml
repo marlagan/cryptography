@@ -35,14 +35,8 @@
             <Button fx:id="openFileCrypt" layoutX="437.0" layoutY="258.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Otwórz" />
             <Button fx:id="saveFileText" layoutX="166.0" layoutY="258.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Zapisz" />
             <Button fx:id="saveFileCrypt" layoutX="506.0" layoutY="258.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Zapisz" />
-            <RadioButton fx:id="typeWindow" layoutX="246.0" layoutY="28.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="105.0" text="Tekst z okna" />
-            <RadioButton fx:id="typeFile" layoutX="246.0" layoutY="314.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="105.0" text="Tekst z pliku" textAlignment="CENTER" />
             <Button fx:id="cleanLeftButton" layoutX="29.0" layoutY="258.0" mnemonicParsing="false" text="Wyczyść" />
             <Button fx:id="cleanRightButton" layoutX="367.0" layoutY="258.0" mnemonicParsing="false" text="Wyczyść" />
-            <Text layoutX="29.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wybrany plik:" />
-            <Text layoutX="369.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wybrany plik:" />
-            <Label fx:id="fileNameText" layoutX="114.0" layoutY="340.0" />
-            <Label fx:id="fileNameCrypt" layoutX="457.0" layoutY="340.0" />
             <Button fx:id="pickFileToEncrypt" layoutX="25.0" layoutY="314.0" mnemonicParsing="false" text="Wybierz plik do szyfrowania" />
             <Button fx:id="pickFileToDecrypt" layoutX="368.0" layoutY="314.0" mnemonicParsing="false" text="Wybierz plik do odszyfrowania" />
          </children>
