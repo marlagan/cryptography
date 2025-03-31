@@ -11,7 +11,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException{
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("app.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app.fxml"));
             Parent root = loader.load();
             primaryStage.setTitle("Szyfrowanie TripleDES");
             primaryStage.setScene(new Scene(root));

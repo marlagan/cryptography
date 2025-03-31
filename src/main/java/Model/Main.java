@@ -17,12 +17,12 @@ public class Main {
         DES3 des3 = new DES3();
 
         ArrayList<String> keys3 = new ArrayList<>();
-        keys3.add("123abcd");
-        keys3.add("456efgh");
-        keys3.add("789ijkl");
+        keys3.add("abcabcab");
+        keys3.add("abcabcab");
+        keys3.add("abcabcab");
 
         //String test3 = "Store leftover pancakes in an airtight container in the fridge for about a week. Refrain from adding toppings (such as syrup) until right before you serve them so the pancakes don't get soggy.";
-        String test3 = "Hello world!";
+        String test3 = "kot";
 
         System.out.println("Tekst jawny: ");
         System.out.println(test3);

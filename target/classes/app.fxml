@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane dividerPositions="0.2719745222929937" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="526.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
+<SplitPane dividerPositions="0.2719745222929937" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="553.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="137.0" prefWidth="597.0">
          <children>
@@ -21,11 +21,11 @@
             <Text layoutX="395.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Klucz III" wrappingWidth="149.33333333333337" />
             <Button fx:id="generateKeysButton" layoutX="243.0" layoutY="96.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" text="Generuj klucze" />
          </children></AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="265.0" prefWidth="597.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="397.0" prefWidth="597.0">
          <children>
             <Text layoutX="25.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Szyfrowanie / Deszyfrowanie" />
-            <Button fx:id="doEncrypt" layoutX="246.0" layoutY="166.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" text="Szyfruj --&gt;" />
-            <Button fx:id="doDecrypt" layoutX="246.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" text="&lt;-- Deszyfruj" />
+            <Button fx:id="doEncrypt" layoutX="246.0" layoutY="140.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" text="Szyfruj --&gt;" />
+            <Button fx:id="doDecrypt" layoutX="246.0" layoutY="174.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" text="&lt;-- Deszyfruj" />
             <TextArea fx:id="textInput" layoutX="29.0" layoutY="66.0" prefHeight="200.0" prefWidth="200.0" />
             <Text layoutX="29.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tekst jawny:" />
             <TextArea fx:id="textOutput" layoutX="369.0" layoutY="66.0" prefHeight="200.0" prefWidth="200.0" />
@@ -34,8 +34,10 @@
             <Button fx:id="openFileCrypt" layoutX="369.0" layoutY="283.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Otwórz plik z szyfogramem" />
             <Button fx:id="saveFileText" layoutX="29.0" layoutY="317.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Zapisz plik z tekstem jawnym" />
             <Button fx:id="saveFileCrypt" layoutX="369.0" layoutY="317.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Zapisz plik z szyfogramem" />
-            <RadioButton fx:id="typeWindow" layoutX="246.0" layoutY="105.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="105.0" text="Tekst z okna" />
-            <RadioButton fx:id="typeFile" layoutX="246.0" layoutY="129.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="105.0" text="Tekst z pliku" />
+            <RadioButton fx:id="typeWindow" layoutX="246.0" layoutY="79.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="105.0" text="Tekst z okna" />
+            <RadioButton fx:id="typeFile" layoutX="246.0" layoutY="103.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="105.0" text="Tekst z pliku" />
+            <Button fx:id="cleanLeftButton" layoutX="99.0" layoutY="352.0" mnemonicParsing="false" text="Wyczyść" />
+            <Button fx:id="cleanRightButton" layoutX="439.0" layoutY="352.0" mnemonicParsing="false" text="Wyczyść" />
          </children>
       </AnchorPane>
   </items>
