@@ -1,37 +1,24 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import static java.nio.charset.StandardCharsets.UTF_16LE;
 
 public class Main {
     public static void main(String[] args) {
-//        DES des = new DES();
-//        String test = "Store leftover pancakes in an airtight container in the fridge for about a week. Refrain from adding toppings (such as syrup) until right before you serve them so the pancakes don't get soggy.";
-//        String output = des.encrypt(test, "123abcd");
-//        System.out.println("Szyfr: ");
-//        System.out.println(output);
-//        String decrypted = des.decrypt(output, "123abcd");
-//        System.out.println("Test po: ");
-//        System.out.println(decrypted);
+         Tools tools = new Tools();
+         DES des = new DES();
+       ArrayList<String> keys = new ArrayList<>(Arrays.asList("123abcd", "234abcd", "234ghjk"));
+       DES3 DES3 = new DES3();
+       String message = "Me? I have my own addiction. It's not substances, it's not gambling, it's not something that ruins lives though some might disagree with me. My addiction is kebab. The smell of grilled meat, the fresh vegetables, the sauce that perfectly completes the whole thing its my ritual, my daily dose of pleasure. Without it, the day feels incomplete, and every break at work feels empty. Every bite is like a small moment of happiness that satisfies not just my hunger, but also my soul.";
 
-        DES3 des3 = new DES3();
+       String encrypted = DES3.encryptDES3(message, keys);
+       String decrypted = DES3.decryptDES3(encrypted, keys);
+       System.out.println(encrypted);
+       System.out.println(decrypted);
 
-        ArrayList<String> keys3 = new ArrayList<>();
-        keys3.add("123abcd");
-        keys3.add("456efgh");
-        keys3.add("789ijkl");
 
-        //String test3 = "Store leftover pancakes in an airtight container in the fridge for about a week. Refrain from adding toppings (such as syrup) until right before you serve them so the pancakes don't get soggy.";
-        String test3 = "Hello world!";
-
-        System.out.println("Tekst jawny: ");
-        System.out.println(test3);
-        String output3 = des3.encryptDES3(test3, keys3);
-        System.out.println("Szyfr: ");
-        System.out.println(output3);
-        String decrypted3 = des3.decryptDES3(output3, keys3);
-        System.out.println("Uzyskany tekst jawny: ");
-        System.out.println(decrypted3);
     }
 
 }

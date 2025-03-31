@@ -1,8 +1,8 @@
-package main.java.Model;
+package Model;
 
 import java.util.ArrayList;
 
-import static main.java.Model.Data.*;
+import static Model.Data.*;
 
 public class Key {
     /**
@@ -23,8 +23,8 @@ public class Key {
 
         for (int i = 0; i < 16; i++) { //dla rund 1,2,9 i 16 rotujemy raz, dla pozostałych rotujemy 2
 
-            key28L = shiftLeft(key28L, Data.shiftBits[i]);
-            key28R = shiftLeft(key28R, Data.shiftBits[i]);
+            key28L = shiftLeft(key28L, shiftBits[i]);
+            key28R = shiftLeft(key28R, shiftBits[i]);
 
             System.arraycopy(key28L, 0, key56, 0, half); //łączenie spowrotem do jednej tablicy
             System.arraycopy(key28R, 0, key56, half, half);

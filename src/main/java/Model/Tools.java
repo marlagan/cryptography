@@ -1,4 +1,4 @@
-package main.java.Model;
+package Model;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -118,7 +118,8 @@ public class Tools {
             for (int j = 0; j < 8; j++) {
                 byteValue |= (byte) (bits[i + j] << (7 - j));
             }
-            if(byteValue != 0)  text.append((char) (byteValue & 0xFF));
+            //if(byteValue != 0)
+            text.append((char) (byteValue & 0xFF));
 
         }
 
