@@ -17,13 +17,16 @@ public class Controller {
     private TextField key1Field, key2Field, key3Field;
 
     @FXML
-    private Button generateKeysButton, doEncrypt, doDecrypt, cleanLeftButton, cleanRightButton, openFileText, openFileCrypt, saveFileText, saveFileCrypt;
+    private Button generateKeysButton, doEncrypt, doDecrypt, cleanLeftButton, cleanRightButton, openFileText, openFileCrypt, saveFileText, saveFileCrypt, pickFileToEncrypt, pickFileToDecrypt;
 
     @FXML
     private TextArea textInput, textOutput;
 
     @FXML
     private RadioButton typeWindow, typeFile;
+
+    @FXML
+    private Label fileNameText, fileNameCrypt;
 
     private DES3 des3;
     private ToggleGroup encryptionMode;
@@ -40,93 +43,46 @@ public class Controller {
         generateKeysButton.setOnAction(e -> generateKeys());
         doEncrypt.setOnAction(e -> encryptText());
         doDecrypt.setOnAction(e -> decryptText());
-        openFileText.setOnAction(e -> openFile(textInput));
-        openFileCrypt.setOnAction(e -> openFile(textOutput));
+
+        openFileText.setOnAction(e -> openFile(textInput, fileNameText));
+        openFileCrypt.setOnAction(e -> openFile(textOutput, fileNameCrypt));
         saveFileText.setOnAction(e -> saveFile(textInput));
         saveFileCrypt.setOnAction(e -> saveFile(textOutput));
+
+        pickFileToEncrypt.setOnAction(e -> pickFile(true));
+        pickFileToDecrypt.setOnAction(e -> pickFile(false));
+
         cleanLeftButton.setOnAction(e -> cleanLeft());
         cleanRightButton.setOnAction(e -> cleanRight());
     }
 
-    private void generateKeys() {
-        key1Field.setText(generateRandomKey());
-        key2Field.setText(generateRandomKey());
-        key3Field.setText(generateRandomKey());
-    }
-
-    private String generateRandomKey() {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        Random rand = new Random();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 8; i++) {
-            sb.append(characters.charAt(rand.nextInt(characters.length())));
-        }
-        return sb.toString();
-    }
-
     private void encryptText() {
-        ArrayList<String> keys = new ArrayList<>();
-        keys.add(key1Field.getText());
-        keys.add(key2Field.getText());
-        keys.add(key3Field.getText());
+        ArrayList<String> keys = getKeys();
+        if (keys == null) return;
 
         if (typeWindow.isSelected()) {
             String plainText = textInput.getText();
-            String encrypted = des3.encryptDES3(plainText, keys);
-            textOutput.setText(encrypted);
-        } else if (typeFile.isSelected()) {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Wybierz plik do szyfrowania");
-            File file = fileChooser.showOpenDialog(null);
-            if (file != null) {
-                try {
-                    String content = ReadWriteFile.readText(file.getName());
-                    String encrypted = des3.encryptDES3(content, keys);
-                    ReadWriteFile.writeText(file.getName() + ".enc", encrypted);
-                    showAlert("Sukces", "Plik zaszyfrowano i zapisano jako " + file.getName() + ".enc");
-                } catch (IOException e) {
-                    showAlert("Błąd", "Nie udało się przetworzyć pliku.");
-                }
-            }
+            textOutput.setText(des3.encryptDES3(plainText, keys));
         }
     }
 
     private void decryptText() {
-        ArrayList<String> keys = new ArrayList<>();
-        keys.add(key1Field.getText());
-        keys.add(key2Field.getText());
-        keys.add(key3Field.getText());
+        ArrayList<String> keys = getKeys();
+        if (keys == null) return;
 
         if (typeWindow.isSelected()) {
-            String cipherText = textOutput.getText();
-            String decrypted = des3.decryptDES3(cipherText, keys);
-            textInput.setText(decrypted);
-        } else if (typeFile.isSelected()) {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Wybierz plik do deszyfrowania");
-            File file = fileChooser.showOpenDialog(null);
-            if (file != null) {
-                try {
-                    String content = ReadWriteFile.readText(file.getName());
-                    String decrypted = des3.decryptDES3(content, keys);
-                    ReadWriteFile.writeText(file.getName().replace(".enc", "") + "_decrypted.txt", decrypted);
-                    showAlert("Sukces", "Plik odszyfrowano i zapisano jako " + file.getName().replace(".enc", "") + "_decrypted.txt");
-                } catch (IOException e) {
-                    showAlert("Błąd", "Nie udało się przetworzyć pliku.");
-                }
-            }
+            String encryptedText = textOutput.getText();
+            textInput.setText(des3.decryptDES3(encryptedText, keys));
         }
     }
 
-    private void openFile(TextArea targetArea) {
+    private void openFile(TextArea targetArea, Label fileNameLabel) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Wybierz plik");
-
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
+            fileNameLabel.setText(file.getName());
             try {
-                String content = ReadWriteFile.readText(file.getName());
-                targetArea.setText(content);
+                targetArea.setText(ReadWriteFile.readText(file.getPath()));
             } catch (IOException e) {
                 showAlert("Błąd", "Nie udało się wczytać pliku.");
             }
@@ -135,16 +91,46 @@ public class Controller {
 
     private void saveFile(TextArea sourceArea) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Zapisz plik");
-
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             try {
-                ReadWriteFile.writeText(file.getName(), sourceArea.getText());
+                ReadWriteFile.writeText(file.getPath(), sourceArea.getText());
+                showAlert("Sukces", "Plik zapisano pomyślnie.");
             } catch (IOException e) {
                 showAlert("Błąd", "Nie udało się zapisać pliku.");
             }
         }
+    }
+
+    private void pickFile(boolean isEncrypt) {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            ArrayList<String> keys = getKeys();
+            if (keys == null) return;
+
+            try {
+                String content = ReadWriteFile.readText(file.getPath());
+                String result = isEncrypt ? des3.encryptDES3(content, keys) : des3.decryptDES3(content, keys);
+                String newFilePath = file.getPath() + (isEncrypt ? ".enc" : ".dec");
+                ReadWriteFile.writeText(newFilePath, result);
+                showAlert("Sukces", "Plik zapisano jako " + newFilePath);
+            } catch (IOException e) {
+                showAlert("Błąd", "Nie udało się przetworzyć pliku.");
+            }
+        }
+    }
+
+    private ArrayList<String> getKeys() {
+        ArrayList<String> keys = new ArrayList<>();
+        keys.add(key1Field.getText());
+        keys.add(key2Field.getText());
+        keys.add(key3Field.getText());
+        if (keys.contains("") || keys.contains(null)) {
+            showAlert("Błąd", "Wprowadź wszystkie klucze.");
+            return null;
+        }
+        return keys;
     }
 
     private void showAlert(String title, String message) {
@@ -161,5 +147,21 @@ public class Controller {
 
     private void cleanRight() {
         textOutput.setText(null);
+    }
+
+    private void generateKeys() {
+        key1Field.setText(generateRandomKey());
+        key2Field.setText(generateRandomKey());
+        key3Field.setText(generateRandomKey());
+    }
+
+    private String generateRandomKey() {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random rand = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            sb.append(characters.charAt(rand.nextInt(characters.length())));
+        }
+        return sb.toString();
     }
 }
