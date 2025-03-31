@@ -1,8 +1,9 @@
-package Model;
+package main.java.Model;
 
 import java.util.ArrayList;
 
 public class DES3 {
+
     DES DES;
     public DES3(){
         this.DES = new DES();

@@ -1,6 +1,7 @@
-package Model;
+package main.java.Model;
 
 public class Data {
+
     public static final int[] IP = {
             58, 50, 42, 34, 26, 18, 10, 2,
             60, 52, 44, 36, 28, 20, 12, 4,
@@ -107,6 +108,12 @@ public class Data {
                     {2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11}}
     };
 
+    /**
+     * Method carrying out the permutation
+     * @param table the type of permutation
+     * @param bits bits we want to alter
+     * @return transformed bits
+     */
     public byte[] permute(int[] table, byte[] bits){
         byte [] newBits = new byte[table.length];
         for(int i = 0; i < table.length; i++){
@@ -115,8 +122,12 @@ public class Data {
         return newBits;
     }
 
+    /**
+     * Method conducting the SBOX permutation
+     * @param bits bits we want to change
+     * @return transformed bits
+     */
     public byte[] useSBOX(byte[] bits) {
-
 
         byte[] newBits = new byte[SBOX.length * 4];
 

@@ -1,13 +1,20 @@
-package Model;
+package main.java.Model;
 
-import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.io.*;
+
 
 public class ReadWriteFile {
 
+    //The String containing the path to the GUI directory.
     private static final String directory = System.getProperty("user.dir") + "\\src\\GUI";
 
-
+    /**
+     * Method reading the text from the file
+     * @param path The path where the file we want to read the text from is located
+     * @return Text from the file
+     * @throws IOException exception
+     */
     public static String readText(String path) throws IOException {
         StringBuilder text = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(
@@ -23,27 +30,19 @@ public class ReadWriteFile {
         return textString;
     }
 
+    /**
+     * Method responsible for saving text to the file
+     * @param path the name of the file
+     * @param text the text we want to save
+     * @throws IOException exception
+     */
     public static void writeText(String path, String text) throws IOException {
+
         try (BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(directory + "\\" + path), StandardCharsets.UTF_8))) {
             writer.write(text);
         }
-    }
 
-    public static void main(String[] args) throws IOException {
-        System.out.println(directory);
-        DES DES = new DES();
-        writeText("wielkitest.txt", "Dochodze do konkluzji, ze mam dosc");
-        String r = readText("wielkitest.txt");
-        System.out.println(r);
-        byte [] rr = r.getBytes();
-        System.out.println("feegeg");
-        Tools tools = new Tools();
-        tools.printOneBlock(rr);
-        String o1 = DES.encrypt(r, "123abcd");
-        String o2 = DES.decrypt(o1, "123abcd");
-        System.out.println(o1);
-        System.out.println(o2);
     }
 
 }

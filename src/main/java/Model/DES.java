@@ -1,9 +1,12 @@
-package Model;
+package main.java.Model;
+
+import main.java.Model.Tools;
+import main.java.Model.Key;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static Model.Data.*;
+import static main.java.Model.Data.*;
 
 public class DES {
 
@@ -16,20 +19,17 @@ public class DES {
         this.tools = new Tools();
         this.key = new Key();
         this.data = new Data();
-
     }
 
+    /**
+     * Method encrypting the message with a key given by a user, It repeats block64Encryption on very 64 bits block
+     * @param plainText text given by a user
+     * @param key key given by a user
+     * @return encrypted message
+     */
     public String encrypt(String plainText, String key) {
 
         ArrayList<byte[]> blocks64Bits  = tools.stringToBits(plainText);
-//        System.out.println("PRZED SZYFROWANIEM:");
-//        for (byte[] block : blocks64Bits) {
-//            tools.printOneBlock(block);
-//            System.out.println("\n");
-//        }
-
-
-        //zamiana na bity i tworzenie podkluczy
 
         this.subKeys = this.key.generateSubKeys(tools.stringToBits(key).get(0)); //get(0) -> wyciagamy pierwszy blok 64-bitowy (tablice 8 bajtow), bo tak dlugi jest klucz, a .blocks64bits() zwraca liste tych tablic
 
@@ -39,19 +39,13 @@ public class DES {
             encryptedBlocks64Bits.add(encrypted);
         }
 
-//        System.out.println("PO SZYFROWANIU:");
-//        for (byte[] block : encryptedBlocks64Bits) {
-//            tools.printOneBlock(block);
-//            System.out.println("\n");
-//        }
-
         return tools.bitsToString(encryptedBlocks64Bits);
     }
 
     /**
-     *
-     * @param bits Tablica z obiektami byte[], dokladnie 8 bajtów
-     * @return
+     * Applying DES encryption to 64 bits block
+     * @param bits bits - 64 bits (64 bytes - one byte = one bit)
+     * @return  bits after 16 rounds and the final permutation
      */
     private byte[] block64Encryption(byte[] bits) {
 
@@ -65,19 +59,17 @@ public class DES {
         System.arraycopy(afterIP, half, bits32R, 0, half);
 
         for (int i = 0; i < 16; i++) {
-            //System.out.println("Runda: " + (i+1));
+
             byte[] newR = functionF(bits32R, subKeys.get(i));
-            //System.out.println("ilosc po funkcji, nowa tymczasowa R: " + (newR.length) + " /32");
+
             byte[] oldR = bits32R.clone();
-            //System.out.println("klon starej R: " + (oldR.length) + " /32");
 
             for (int j = 0; j < bits32R.length; j++) {
                 bits32R[j] = (byte) (newR[j] ^ bits32L[j]);
             }
-            //System.out.println("nowa, stała R: " + (bits32R.length) + " /32");
 
             bits32L = oldR;
-            //System.out.println("nowa, stała L (kopia oldR): " + (bits32L.length) + " /32");
+
         }
 
         byte[] oldL = bits32L.clone();
@@ -89,60 +81,53 @@ public class DES {
         System.arraycopy(bits32R, 0, newBits, half, bits32R.length);
 
         byte[] finalE = data.permute(IP1, newBits);
-        //System.out.println("koncowa : " + (finalE.length) + " /64");
 
         return finalE;
     }
 
+    /**
+     * Feistel function using such techniques as Expansion Permutation, XOR , SBOX permutation, P permutation
+     * @param bitsR the right half of bits (at first 32 bits)
+     * @param key the subkey for current round
+     * @return bits after Feistel Function
+     */
     private byte[] functionF(byte[] bitsR, byte[] key) {
 
-        //System.out.println("ilosc przed perm. ext.: " + (bitsR.length) + " /32");
-        byte[] expBitsR = data.permute(EP, bitsR);  //permutacja z rozszerzeniem 32 -> 48 bitów
-        //System.out.println("ilosc po perm. ext.: " + (expBitsR.length) + " /48");
+
+        byte[] expBitsR = data.permute(EP, bitsR);
+
         byte[] XORBits = new byte[expBitsR.length];
 
         for (int i = 0; i < expBitsR.length; i++) {
             XORBits[i] = (byte) (expBitsR[i] ^ key[i]);
         }
-        //System.out.println("ilosc po XOR: " + (XORBits.length) + " /48");
 
         byte[] afterSBOX = data.useSBOX(XORBits);
-        //System.out.println("ilosc po SBOX: " + (afterSBOX.length) + " /32");
 
         byte[] lastPermute = data.permute(P, afterSBOX);
-        //System.out.println("ilosc po P: " + (lastPermute.length) + " /32");
 
         return lastPermute;
     }
 
+    /**
+     * Method decrypting the message given by a user
+     * @param encryptedText encypted text given by a user
+     * @param key the key for this decryption
+     * @return decrypted text
+     */
     public String decrypt(String encryptedText, String key) {
 
         ArrayList<byte[]> blocks64Bits = tools.stringToBits(encryptedText);
 
-//        System.out.println("PRZED DESZYFROWANIEM:");
-//        for (byte[] block : blocks64Bits) {
-//            tools.printOneBlock(block);
-//            System.out.println("\n");
-//        }
-
         this.subKeys = this.key.generateSubKeys(tools.stringToBits(key).get(0));
         Collections.reverse(subKeys);
-
 
         ArrayList<byte[]> decryptedBlocks64Bits = new ArrayList<>();
         for (byte[] block : blocks64Bits) {
             byte[] encrypted = block64Encryption(block);
             decryptedBlocks64Bits.add(encrypted);
-//            System.out.println("supi wazne");
-//            tools.printOneBlock(encrypted);
+
         }
-
-
-//        System.out.println("PO DESZYFROWANIU:");
-//        for (byte[] block : decryptedBlocks64Bits) {
-//            tools.printOneBlock(block);
-//            System.out.println("\n");
-//        }
 
         return tools.bitsToString(decryptedBlocks64Bits);
     }

@@ -1,4 +1,4 @@
-package Model;
+package main.java.Model;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -42,15 +42,14 @@ public class Tools {
     }
 
     /**
-     *
-     * @param bytes
-     * @return
+     * One block - 64 bits, creating an array representing 8 bytes
+     * @param bytes bytes from the text
+     * @return returning an array containing 8 bytes - 64 bits (it's 64 bytes because in our code one bit equals one bit)
      */
 
     public static byte[] oneArray8Bytes(byte[] bytes, int blockIndex) {
         int count = 0;
 
-        // Obliczamy liczbę bitów dla danego bloku
         int startIndex = blockIndex * 8;
         int remainingBytes = Math.min(8, bytes.length - startIndex);
         byte[] bits64 = new byte[64];
@@ -63,7 +62,7 @@ public class Tools {
                 count++;
             }
         }
-
+        //The case when the block is not fully filled, therefore, we have to add zeros
         if (remainingBytes < 8) {
             for (int i = count; i < 64; i++) {
                 bits64[i] = 0;
@@ -73,9 +72,9 @@ public class Tools {
         return bits64;
     }
     /**
-     *
-     * @param value
-     * @return
+     * Converting one byte to byte[] array where one byte equals to one bit.
+     * @param value Byte value
+     * @return  byte[] where one byte is equivalent to one bit
      */
     public static byte[] oneByteOneBit(byte value) {
 
@@ -90,6 +89,11 @@ public class Tools {
         return bits8;
     }
 
+    /**
+     * Converting bits to String
+     * @param blocks bits
+     * @return bits converted to String
+     */
     public String bitsToString(ArrayList<byte[]> blocks) {
         StringBuilder text = new StringBuilder();
 
@@ -100,7 +104,11 @@ public class Tools {
         return text.toString();
     }
 
-
+    /**
+     * Converting bits to their corresponding char values.
+     * @param bits bits we want to convert
+     * @return text representation of bits
+     */
     public static String oneByteOneBitToString(byte[] bits) {
 
         StringBuilder text = new StringBuilder();
@@ -118,7 +126,10 @@ public class Tools {
     }
 
 
-
+    /**
+     * A subsidiary function which prints the block of bits(8 bits)
+     * @param oneBlock bits we want to print out
+     */
     public void printOneBlock(byte[] oneBlock) {
         for (int i = 0; i < oneBlock.length; i++) {
             if (i % 8 == 0) {

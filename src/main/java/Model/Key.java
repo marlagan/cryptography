@@ -1,11 +1,15 @@
-package Model;
+package main.java.Model;
 
 import java.util.ArrayList;
 
-import static Model.Data.*;
+import static main.java.Model.Data.*;
 
 public class Key {
-
+    /**
+     * Generating subKeys for 16 round
+     * @param key the key given by a user
+     * @return list containing subkeys for 16 rounds
+     */
     public ArrayList<byte[]> generateSubKeys(byte[] key) {
         Data data = new Data();
         byte[] key56 = data.permute(PC1, key); //usuwamy bity parzystosci poprzez permutacje z pominięciem tych bitów, więc otrzymujemy 56 bity z 64 bitów klucza
@@ -31,6 +35,12 @@ public class Key {
         return subKeys;
     }
 
+    /**
+     * Method shifting bits to the left
+     * @param bits bits we want to shift
+     * @param shiftAmount amount of shifts we have to do
+     * @return altered bits
+     */
     private byte[] shiftLeft(byte[] bits, int shiftAmount){ //przesunięcie powinno być na bitach, a nie na bajtach (?)
 
         //to akurat głównie wypluł czat, ale trochę nie ogarniam tych przesunięć, więc pewnie poprawię zaraz:
