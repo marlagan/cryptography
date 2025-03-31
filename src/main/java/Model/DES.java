@@ -22,11 +22,11 @@ public class DES {
     public String encrypt(String plainText, String key) {
 
         ArrayList<byte[]> blocks64Bits  = tools.stringToBits(plainText);
-        System.out.println("PRZED SZYFROWANIEM:");
-        for (byte[] block : blocks64Bits) {
-            tools.printOneBlock(block);
-            System.out.println("\n");
-        }
+//        System.out.println("PRZED SZYFROWANIEM:");
+//        for (byte[] block : blocks64Bits) {
+//            tools.printOneBlock(block);
+//            System.out.println("\n");
+//        }
 
 
         //zamiana na bity i tworzenie podkluczy
@@ -39,11 +39,11 @@ public class DES {
             encryptedBlocks64Bits.add(encrypted);
         }
 
-        System.out.println("PO SZYFROWANIU:");
-        for (byte[] block : encryptedBlocks64Bits) {
-            tools.printOneBlock(block);
-            System.out.println("\n");
-        }
+//        System.out.println("PO SZYFROWANIU:");
+//        for (byte[] block : encryptedBlocks64Bits) {
+//            tools.printOneBlock(block);
+//            System.out.println("\n");
+//        }
 
         return tools.bitsToString(encryptedBlocks64Bits);
     }
@@ -119,11 +119,11 @@ public class DES {
 
         ArrayList<byte[]> blocks64Bits = tools.stringToBits(encryptedText);
 
-        System.out.println("PRZED DESZYFROWANIEM:");
-        for (byte[] block : blocks64Bits) {
-            tools.printOneBlock(block);
-            System.out.println("\n");
-        }
+//        System.out.println("PRZED DESZYFROWANIEM:");
+//        for (byte[] block : blocks64Bits) {
+//            tools.printOneBlock(block);
+//            System.out.println("\n");
+//        }
 
         this.subKeys = this.key.generateSubKeys(tools.stringToBits(key).get(0));
         Collections.reverse(subKeys);
@@ -133,16 +133,16 @@ public class DES {
         for (byte[] block : blocks64Bits) {
             byte[] encrypted = block64Encryption(block);
             decryptedBlocks64Bits.add(encrypted);
-            System.out.println("supi wazne");
-            tools.printOneBlock(encrypted);
+//            System.out.println("supi wazne");
+//            tools.printOneBlock(encrypted);
         }
 
 
-        System.out.println("PO DESZYFROWANIU:");
-        for (byte[] block : decryptedBlocks64Bits) {
-            tools.printOneBlock(block);
-            System.out.println("\n");
-        }
+//        System.out.println("PO DESZYFROWANIU:");
+//        for (byte[] block : decryptedBlocks64Bits) {
+//            tools.printOneBlock(block);
+//            System.out.println("\n");
+//        }
 
         return tools.bitsToString(decryptedBlocks64Bits);
     }
