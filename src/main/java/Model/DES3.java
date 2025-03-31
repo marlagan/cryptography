@@ -10,16 +10,16 @@ public class DES3 {
     public String encryptDES3(String text, ArrayList<String> keys){
 
         String firstRound = DES.encrypt(text, keys.get(0));
-        String secondRound = DES.decrypt(text, keys.get(1));
+        String secondRound = DES.decrypt(firstRound, keys.get(1));
 
-        return DES.encrypt(text, keys.get(2));
+        return DES.encrypt(secondRound, keys.get(2));
     }
     public String decryptDES3(String text, ArrayList<String> keys){
 
-        String firstRound = DES.decrypt(text, keys.get(0));
-        String secondRound = DES.decrypt(text, keys.get(1));
+        String firstRound = DES.decrypt(text, keys.get(2));
+        String secondRound = DES.decrypt(firstRound, keys.get(1));
 
-        return DES.decrypt(text, keys.get(2));
+        return DES.decrypt(secondRound, keys.get(0));
 
     }
 }

@@ -1,23 +1,24 @@
 package GUI;
-import Model.DES3;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import java.io.IOException;
 
 public class MainApp extends Application {
     @Override
-    public void start(Stage primaryStage) {
-        Label label = new Label("Witaj w JavaFX!");
-
-        StackPane root = new StackPane(label);
-        Scene scene = new Scene(root, 600, 500);
-
-        primaryStage.setTitle("TripleDES");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void start(Stage primaryStage) throws IOException{
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("app.fxml"));
+            Parent root = loader.load();
+            primaryStage.setTitle("Szyfrowanie TripleDES");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
