@@ -13,13 +13,16 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Random;
 
+import static Model.ReadWriteFile.readFileBytes;
+import static Model.ReadWriteFile.writeFileBytes;
+
 public class Controller {
 
     @FXML
     private TextField key1Field, key2Field, key3Field;
 
     @FXML
-    private Button generateKeysButton, doEncrypt, doDecrypt, cleanLeftButton, cleanRightButton, openFileText, openFileCrypt, saveFileText, saveFileCrypt, pickFileToEncrypt, pickFileToDecrypt, pickFileToEncryptOther, pickFileToDecryptOther;
+    private Button generateKeysButton, doEncrypt, doDecrypt, cleanLeftButton, cleanRightButton, openFileText, openFileCrypt, saveFileText, saveFileCrypt, pickFileToEncrypt, pickFileToDecrypt;
 
     @FXML
     private TextArea textInput, textOutput;
@@ -42,8 +45,6 @@ public class Controller {
 
         pickFileToEncrypt.setOnAction(e -> pickFile(true));
         pickFileToDecrypt.setOnAction(e -> pickFile(false));
-        pickFileToEncryptOther.setOnAction(e -> pickFileOther(true));
-        pickFileToDecryptOther.setOnAction(e -> pickFileOther(false));
 
         cleanLeftButton.setOnAction(e -> cleanLeft());
         cleanRightButton.setOnAction(e -> cleanRight());
@@ -104,21 +105,35 @@ public class Controller {
     private void pickFile(boolean isEncrypt) {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
+
         if (file != null) {
             ArrayList<String> keys = getKeys();
             if (keys == null) return;
 
             try {
-                String content = ReadWriteFile.readText(file.getName());
-                String result = isEncrypt ? des3.encryptDES3(content, keys) : des3.decryptDES3(content, keys);
-                String newFilePath = (isEncrypt ? "encrypted.txt" : "decrypted.txt");
-                ReadWriteFile.writeText(newFilePath, result);
-                showAlert("Sukces", "Plik zapisano jako " + newFilePath);
+                byte[] tekst_do_zmiany = readFileBytes(file.getPath());
+                System.out.println(file.getPath());
+
+                String base64EncryptedText = Base64.getEncoder().encodeToString(tekst_do_zmiany);
+                String m = isEncrypt ? des3.encryptDES3(base64EncryptedText, keys) : des3.decryptDES3(base64EncryptedText, keys);
+                byte[] encryptedBytes = m.getBytes();
+                //String newFileName = (isEncrypt ? "encrypted" : "decrypted");
+                writeFileBytes("D:\\IV sem\\cryptology\\src\\main\\java\\GUI\\plik2222.pdf", encryptedBytes);
+                //showAlert("Sukces", "Plik zapisano jako " + newFileName);
             } catch (IOException e) {
                 showAlert("Błąd", "Nie udało się przetworzyć pliku.");
             }
         }
     }
+
+//    String m = DES31.encryptDES3(base64EncryptedText, keys);
+//    byte[] encryptedBytes = m.getBytes();
+//    writeFileBytes("C:\studia\kadzik\ml_ap_zad3\src\algorytm1.py", encryptedBytes);
+
+//    byte[] test2 = readFileBytes("C:\studia\kadzik\ml_ap_zad3\src\algorytm1.py");
+//    String decryptedText = DES31.decryptDES3(new String(test2), keys);
+//    byte[] decryptedBytes = Base64.getDecoder().decode(decryptedText);
+//    writeFileBytes("C:\studia\kadzik\ml_ap_zad3\src\algorytm11.py", decryptedBytes);
 
 
     private ArrayList<String> getKeys() {
@@ -150,9 +165,9 @@ public class Controller {
     }
 
     private void generateKeys() {
-        key1Field.setText(generateRandomKey(8));
-        key2Field.setText(generateRandomKey(8));
-        key3Field.setText(generateRandomKey(8));
+        key1Field.setText(generateRandomKey());
+        key2Field.setText(generateRandomKey());
+        key3Field.setText(generateRandomKey());
     }
 
     private String generateRandomKey() {
@@ -174,66 +189,4 @@ public class Controller {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
     }
-
-
-//    private void pickFileOther(boolean isEncrypt) {
-//        FileChooser fileChooser = new FileChooser();
-//        Tools tools = new Tools();
-//        File file = fileChooser.showOpenDialog(null);
-//        if (file != null) {
-//            ArrayList<String> keys = getKeys();
-//            if (keys == null) return;
-//
-//            try {
-//                byte[] content = ReadWriteFile.readOtherFile(file.getAbsolutePath());
-//                ArrayList<byte[]> bits = tools.otherToBits(content);
-//
-//                // Przekształcamy bajty na string do szyfrowania
-//                String result = isEncrypt ? des3.encryptDES3File(bits, keys) : des3.decryptDES3File(bits, keys);
-//                byte[] resultBytes = result.getBytes(); // Zamiana na bajty do zapisu
-//                String newFilePath = file.getAbsolutePath().replaceAll("\\.\\w+$", "") + (isEncrypt ? "-encrypted" : "-decrypted");
-//                ReadWriteFile.writeOtherFile(newFilePath, resultBytes);
-//                showAlert("Sukces", "Plik zapisano jako " + newFilePath);
-//            } catch (IOException e) {
-//                showAlert("Błąd", "Nie udało się przetworzyć pliku.");
-//            }
-//        }
-//    }
-
-    private void pickFileOther(boolean isEncrypt) {
-        Tools tools = new Tools();
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-            ArrayList<String> keys = getKeys();
-            if (keys == null) return;
-            try {
-                // Odczytujemy plik jako bajty
-                byte[] content = ReadWriteFile.readOtherFile(file.getAbsolutePath());
-                // Konwertujemy bajty na "bity" (ArrayList<byte[]>)
-                ArrayList<byte[]> bits = tools.otherToBits(content);
-                // Szyfrujemy lub deszyfrujemy dane (DES3 dla plików)
-                ArrayList<byte[]> resultBits = isEncrypt ? des3.encryptDES3File(bits, keys) : des3.decryptDES3File(bits, keys);
-                // Zamieniamy ArrayList<byte[]> na tablicę byte[] do zapisu
-                byte[] resultBytes = tools.bitsToByteArray(resultBits);
-                // Zachowujemy oryginalne rozszerzenie pliku
-                String fileName = file.getName();
-                int dotIndex = fileName.lastIndexOf('.');
-                String baseName = (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
-                String extension = (dotIndex == -1) ? "" : fileName.substring(dotIndex);
-                String newFilePath = file.getAbsolutePath().replace(fileName, baseName + (isEncrypt ? "-encrypted" : "-decrypted") + extension);
-                // Zapisujemy wynik do pliku
-                ReadWriteFile.writeOtherFile(newFilePath, resultBytes);
-                showAlert("Sukces", "Plik zapisano jako " + newFilePath);
-            } catch (IOException e) {
-                showAlert("Błąd", "Nie udało się przetworzyć pliku.");
-            }
-        }
-    }
-
-
-
-
-
-
 }

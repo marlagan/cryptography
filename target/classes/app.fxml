@@ -37,10 +37,8 @@
             <Button fx:id="saveFileCrypt" layoutX="506.0" layoutY="258.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Zapisz" />
             <Button fx:id="cleanLeftButton" layoutX="29.0" layoutY="258.0" mnemonicParsing="false" text="Wyczyść" />
             <Button fx:id="cleanRightButton" layoutX="367.0" layoutY="258.0" mnemonicParsing="false" text="Wyczyść" />
-            <Button fx:id="pickFileToEncrypt" layoutX="25.0" layoutY="314.0" mnemonicParsing="false" text="Wybierz plik do szyfrowania (txt)" />
-            <Button fx:id="pickFileToDecrypt" layoutX="368.0" layoutY="314.0" mnemonicParsing="false" text="Wybierz plik do odszyfrowania (txt)" />
-             <Button fx:id="pickFileToEncryptOther" layoutX="25.0" layoutY="344.0" mnemonicParsing="false" text="Wybierz plik do szyfrowania (inny)" />
-             <Button fx:id="pickFileToDecryptOther" layoutX="368.0" layoutY="344.0" mnemonicParsing="false" text="Wybierz plik do odszyfrowania (inny)" />
+            <Button fx:id="pickFileToEncrypt" layoutX="25.0" layoutY="314.0" mnemonicParsing="false" text="Wybierz plik do szyfrowania" />
+            <Button fx:id="pickFileToDecrypt" layoutX="368.0" layoutY="314.0" mnemonicParsing="false" text="Wybierz plik do odszyfrowania" />
          </children>
       </AnchorPane>
   </items>

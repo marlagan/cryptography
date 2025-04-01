@@ -140,32 +140,4 @@ public class Tools {
             System.out.print(oneBlock[i] + " ");
         }
     }
-
-
-
-
-
-
-    //idk
-    public ArrayList<byte[]> otherToBits(byte[] sth) {
-
-        ArrayList<byte[]> blocks = new ArrayList<>();
-
-        int blocksAmt = (int) Math.ceil(sth.length / 8.0);
-
-        for (int i = 0; i < blocksAmt; i++) {
-            byte[] block64Bits = oneArray8Bytes(sth, i);
-            blocks.add(block64Bits);
-        }
-        return blocks;
-    }
-
-    public byte[] bitsToByteArray(ArrayList<byte[]> bitsList) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        for (byte[] bits : bitsList) {
-            outputStream.write(bits, 0, bits.length);
-        }
-        return outputStream.toByteArray();
-    }
-
 }

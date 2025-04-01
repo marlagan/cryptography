@@ -35,13 +35,12 @@ public class ReadWriteFile {
 
     }
 
-    public static byte[] readOtherFile(String path) throws IOException {
-        File file = new File(path);
-        return Files.readAllBytes(file.toPath());
+    public static byte[] readFileBytes(String path) throws IOException {
+        return Files.readAllBytes(Path.of(path));
     }
 
-    public static void writeOtherFile(String path, byte[] data) throws IOException {
-        Files.write(Path.of(path), data, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    public static void writeFileBytes(String path, byte[] data) throws IOException {
+        Files.write(Path.of(path), data);
     }
 
 }
