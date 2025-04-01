@@ -111,29 +111,37 @@ public class Controller {
             if (keys == null) return;
 
             try {
-                byte[] tekst_do_zmiany = readFileBytes(file.getPath());
-                System.out.println(file.getPath());
+                String fileName = file.getName();
+                String parentPath = file.getParent(); // Folder, w którym jest plik
+                int dotIndex = fileName.lastIndexOf('.');
 
-                String base64EncryptedText = Base64.getEncoder().encodeToString(tekst_do_zmiany);
-                String m = isEncrypt ? des3.encryptDES3(base64EncryptedText, keys) : des3.decryptDES3(base64EncryptedText, keys);
-                byte[] encryptedBytes = m.getBytes();
-                //String newFileName = (isEncrypt ? "encrypted" : "decrypted");
-                writeFileBytes("D:\\IV sem\\cryptology\\src\\main\\java\\GUI\\plik2222.pdf", encryptedBytes);
-                //showAlert("Sukces", "Plik zapisano jako " + newFileName);
+                String baseName = (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
+                String extension = (dotIndex == -1) ? "" : fileName.substring(dotIndex);
+
+                String newFileName = baseName + (isEncrypt ? "-enc" : "-dec") + extension;
+                String newFilePath = parentPath + File.separator + newFileName;
+
+                if (isEncrypt) {
+                    byte[] tekst_do_zmiany = readFileBytes(file.getPath());
+                        System.out.println(file.getPath());
+
+                    String base64EncryptedText = Base64.getEncoder().encodeToString(tekst_do_zmiany);
+                    String m = des3.encryptDES3(base64EncryptedText, keys);
+                    byte[] encryptedBytes = m.getBytes();
+                    writeFileBytes(newFilePath, encryptedBytes);
+                    showAlert("Sukces", "Plik zapisano jako " + newFileName);
+                } else {
+                    byte[] tekst_do_zmiany = readFileBytes(file.getPath());
+                    String decryptedText = des3.decryptDES3(new String(tekst_do_zmiany), keys);
+                    byte[] decryptedBytes = Base64.getDecoder().decode(decryptedText);
+                    writeFileBytes(newFilePath, decryptedBytes);
+                    showAlert("Sukces", "Plik zapisano jako " + newFileName);
+                }
             } catch (IOException e) {
                 showAlert("Błąd", "Nie udało się przetworzyć pliku.");
             }
         }
     }
-
-//    String m = DES31.encryptDES3(base64EncryptedText, keys);
-//    byte[] encryptedBytes = m.getBytes();
-//    writeFileBytes("C:\studia\kadzik\ml_ap_zad3\src\algorytm1.py", encryptedBytes);
-
-//    byte[] test2 = readFileBytes("C:\studia\kadzik\ml_ap_zad3\src\algorytm1.py");
-//    String decryptedText = DES31.decryptDES3(new String(test2), keys);
-//    byte[] decryptedBytes = Base64.getDecoder().decode(decryptedText);
-//    writeFileBytes("C:\studia\kadzik\ml_ap_zad3\src\algorytm11.py", decryptedBytes);
 
 
     private ArrayList<String> getKeys() {
