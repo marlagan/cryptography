@@ -1,9 +1,6 @@
 package Model;
-
-import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 
 public class Tools {
@@ -80,6 +77,7 @@ public class Tools {
     public static byte[] oneByteOneBit(byte value) {
 
         byte[] bits8 = new byte[8];
+        //scope 0 - 256
         int number = value & 0xFF;
 
         for (int i = 7; i >= 0; i--) {

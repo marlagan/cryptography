@@ -31,7 +31,6 @@ public class DES3 {
 
     public String decryptDES3(String text, ArrayList<String> keys){
 
-
         ArrayList<byte[]> bits = tools.stringToBits(text);
 
         String firstKey = keys.get(0);
@@ -47,11 +46,13 @@ public class DES3 {
         ArrayList<byte[]> bitsThree= DES.decrypt(bitsTwo, keyFirstBits);
         String decrypted = tools.bitsToString(bitsThree);
         StringBuilder finalString = new StringBuilder();
+
         for (char c : decrypted.toCharArray()) {
             if(c != 0){
                 finalString.append(c);
             }
         }
+
         return finalString.toString();
 
     }
