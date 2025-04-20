@@ -27,11 +27,8 @@ public class DES {
      */
     public ArrayList<byte[]> encrypt(ArrayList<byte[]> blocks64Bits, byte[] key) {
 
-        //ArrayList<byte[]> blocks64Bits  = tools.stringToBits(plainText);
-
-        this.subKeys = this.key.generateSubKeys(key); //get(0) -> wyciagamy pierwszy blok 64-bitowy (tablice 8 bajtow), bo tak dlugi jest klucz, a .blocks64bits() zwraca liste tych tablic
-
-        ArrayList<byte[]> encryptedBlocks64Bits = new ArrayList<>(); //kazdy blok (64bit) tekstu szyfrujemy za pomoca block64Encryption()
+        this.subKeys = this.key.generateSubKeys(key); 
+        ArrayList<byte[]> encryptedBlocks64Bits = new ArrayList<>(); 
         for (byte[] block : blocks64Bits) {
             byte[] encrypted = block64Encryption(block);
             encryptedBlocks64Bits.add(encrypted);
